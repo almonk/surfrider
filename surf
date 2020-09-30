@@ -37,12 +37,30 @@ def describe_all
 end
 
 def follow(sobject)
+  fields = ARGV[2...].join(", ")
   Surfrider.client.create!("PushTopic",
                            ApiVersion: "29.0",
                            Name: "#{sobject}Change",
                            Description: "All account records",
                            NotifyForFields: "All",
-                           Query: "select Id, Subject from #{sobject}")
+                           Query: "select Id, #{fields} from #{sobject}")
+
+  puts "Created new streaming push topic"
+
+  last_line = 0
+  file = File.open("app.rb", "r+")
+  file.each { last_line = file.pos unless file.eof? }
+
+  file.seek(last_line, IO::SEEK_SET)
+    file.print %{
+        with "#{sobject}/Change" do |record|
+          # Your code
+        end
+      end
+    }
+  file.close
+
+  system("rufo app.rb")
 end
 
 def dispatch(event)
