@@ -1,0 +1,16 @@
+require "./rider/Surfrider.rb"
+include Surfrider
+
+Surf.run do
+  with "Property/Create" do |record|
+    puts record.Name
+    
+    dispatch "CreateTask",
+      body: "Ring the owner of #{record.Name}",
+      related_to: record.Id
+  end
+
+  with "Task/Change" do |record|
+    puts "A task was updated ✅ (#{record.Subject})"
+  end
+end

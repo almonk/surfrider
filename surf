@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+require "./rider/Surfrider.rb"
+include Surfrider
+
+def parse_input
+  if ARGV[0] == "describe" && ARGV[1]
+    describe(ARGV[1])
+  end
+
+  if ARGV[0] == "describe" && ARGV[1] == nil
+    describe_all
+  end
+
+  if ARGV[0] == "follow"
+    follow(ARGV[1])
+  end
+
+  if ARGV[0] == "dispatch"
+    dispatch(ARGV[1])
+  end
+end
+
+private
+
+def describe(sobject)
+  puts "\n"
+  puts "=> #{sobject}"
+  Surfrider.client.describe(sobject).fields.each do |field|
+    puts "#{field.name}"
+  end
+end
+
+def describe_all
+  Surfrider.client.describe.each do |sobject|
+    puts "#{sobject.name}"
+  end
+end
+
+def follow(sobject)
+  Surfrider.client.create!("PushTopic",
+                           ApiVersion: "29.0",
+                           Name: "#{sobject}Change",
+                           Description: "All account records",
+                           NotifyForFields: "All",
+                           Query: "select Id, Subject from #{sobject}")
+end
+
+def dispatch(event)
+  Surfrider.client.create!("PlatformEvent",
+                           Name: "#{event}__e")
+end
+
+parse_input
