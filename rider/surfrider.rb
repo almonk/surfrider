@@ -9,6 +9,7 @@ require "colorize"
 
 Surf = EM
 
+
 module Surfrider
   @@client = Restforce.new(username: ENV["SF_USERNAME"],
                            password: ENV["SF_PASSWORD"],
@@ -46,17 +47,6 @@ module Surfrider
     @@client
   end
 
-  private
-
-  def follow_object(sobject, fields)
-    @@client.create!("PushTopic",
-                     ApiVersion: "29.0",
-                     Name: "PropertyCreate",
-                     Description: "All account records",
-                     NotifyForOperations: "All",
-                     NotifyForFields: "All",
-                     Query: "select Id, Name from Property__c")
-  end
 end
 
 module CookieJar

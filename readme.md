@@ -43,7 +43,7 @@ end
 
 Running your code now will show responses to changes in Salesforce
 
-## Inspect the object model
+## Inspect the Salesforce object model
 At any point we can inspect our object model using `surf describe`
 
 To list out every single object:
@@ -56,4 +56,25 @@ To describe a specific object's fields:
 
 ```
 ./surf describe Object
+```
+
+## CRUD objects in Salesforce
+ 
+Surfrider uses the amazing [Restforce](https://github.com/restforce/restforce) gem, so full documentation can be found on their site. Surfrider aliases the Restforce client to `client`.
+
+Some examples;
+
+**Creating a Task**
+
+```ruby
+client.create "Task",
+       Subject: "Follow up on a thing"
+```
+
+**Updating an account**
+
+```ruby
+client.update "Account",
+       Id: "0016000000MRatd",
+       Name: "Whizbang Corp"
 ```
