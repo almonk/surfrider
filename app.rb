@@ -5,6 +5,6 @@ Surf.run do
   # Your code
 
   with "Property__c/Create" do |record|
-    # Your code
+    puts "A property was created! #{record.Name}"
   end
 end
