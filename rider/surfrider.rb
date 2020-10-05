@@ -39,8 +39,8 @@ module Surfrider
     end
   end
 
-  def dispatch(name, body:, related_to:)
-    puts "⚡️ Sent platform event: #{@@client.create("SRDispatch__e", Name__c: name, Body__c: body, Related__c: related_to)}".blue
+  def dispatch(name, **args)
+    puts "⚡️ Sent platform event: #{@@client.create("#{name}__e", args)}".blue
   end
 
   def client

@@ -23,9 +23,9 @@ Connected to ☁️ Salesforce
 as: amonk@curious-wolf-58aoub.com
 ```
 
-## Write your first event handler
+## Write your first Platform Event handler
 
-surfrider listens to Streaming Platform events and allows developers to write clojures to respond to them.
+surfrider listens to Streaming Platform Events and allows developers to write clojures to respond to them.
 
 First, tell surfrider which object and data you want to be able to subscribe to. Lets imagine we have a custom object called `Property__c` with fields `Name` and `Price`.
 
@@ -56,6 +56,15 @@ To describe a specific object's fields:
 
 ```
 ./surf describe Object
+```
+
+## Dispatching Salesforce Platform Events
+
+As well as receiving events from the Platform, Surfrider can trigger Platform Events using the dispatch method.
+
+```ruby
+dispatch "EventName",
+       Foo: Bar # Add your custom fields here
 ```
 
 ## CRUD objects in Salesforce

@@ -3,7 +3,9 @@ include Surfrider
 
 Surf.run do
   with "Property__c/Change" do |record|
-    client.create "Task",
-           Subject: "Follow up on #{record.Name}"
+    dispatch "SRDispatch",
+            Body__c: "Create task from platform event",
+            Name__c: "CreateTask",
+            Related__c: record.Id
   end
 end
