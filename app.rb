@@ -1,4 +1,4 @@
-require "./rider/Surfrider.rb"
+require "./rider/surfrider.rb"
 include Surfrider
 
 Surf.run do
