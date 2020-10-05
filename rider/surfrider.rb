@@ -1,6 +1,3 @@
-# TODO: make a cli for creating events
-# TODO: explore schema thru cli
-
 require "faye"
 require "restforce"
 require "recursive-open-struct"
@@ -9,15 +6,16 @@ require "colorize"
 
 Surf = EM
 
-
 module Surfrider
+  API_VERSION = 49.0
+
   @@client = Restforce.new(username: ENV["SF_USERNAME"],
                            password: ENV["SF_PASSWORD"],
                            security_token: ENV["SF_TOKEN"],
                            instance_url: ENV["SF_INSTANCE_URL"],
                            client_id: ENV["CLIENT_ID"],
                            client_secret: ENV["CLIENT_SECRET"],
-                           api_version: "48.0")
+                           api_version: API_VERSION)
 
   if @@client.authenticate!
     puts "Connected to ☁️ Salesforce".green
@@ -40,13 +38,12 @@ module Surfrider
   end
 
   def dispatch(name, **args)
-    puts "⚡️ Sent platform event: #{@@client.create("#{name}__e", args)}".blue
+    puts "⚡️ Sent Platform Event: #{@@client.create("#{name}__e", args)}".blue
   end
 
   def client
     @@client
   end
-
 end
 
 module CookieJar

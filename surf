@@ -49,23 +49,62 @@ def describe_all
 end
 
 def follow(sobject)
-  fields = ARGV[2...].join(", ")
+  notifyForOperationCreate = false
+  notifyForOperationUpdate = false
+  notifyForOperationDelete = false
+  notifyForOperationUndelete = false
+
+  operative_phrase = "Change"
+
+  case ARGV[2]
+  when "All"
+    operative_phrase = "Change"
+
+    notifyForOperationCreate = true
+    notifyForOperationUpdate = true
+    notifyForOperationDelete = true
+    notifyForOperationUndelete = true
+  when "Create"
+    operative_phrase = "Create"
+    notifyForOperationCreate = true
+  when "Update"
+    operative_phrase = "Update"
+    notifyForOperationUpdate = true
+  when "Delete"
+    operative_phrase = "Delete"
+    notifyForOperationDelete = true
+  when "Undelete"
+    operative_phrase = "Undelete"
+    notifyForOperationUndelete = true
+  else
+    operative_phrase = "Change"
+    notifyForOperationCreate = true
+    notifyForOperationUpdate = true
+    notifyForOperationDelete = true
+    notifyForOperationUndelete = true
+  end
+
+  fields = ARGV[3...].join(", ")
   Surfrider.client.create!("PushTopic",
-                           ApiVersion: "29.0",
-                           Name: "#{sobject}Change",
+                           ApiVersion: "49.0",
+                           Name: "#{sobject}#{operative_phrase}",
                            Description: "All account records",
+                           NotifyForOperationCreate: notifyForOperationCreate,
+                           NotifyForOperationUpdate: notifyForOperationUpdate,
+                           NotifyForOperationUndelete: notifyForOperationUndelete,
+                           NotifyForOperationDelete: notifyForOperationDelete,
                            NotifyForFields: "All",
                            Query: "select Id, #{fields} from #{sobject}")
 
-  puts "Created new streaming push topic"
+  puts "Created new streaming push topic: #{sobject}/#{operative_phrase}"
 
   last_line = 0
   file = File.open("app.rb", "r+")
   file.each { last_line = file.pos unless file.eof? }
 
   file.seek(last_line, IO::SEEK_SET)
-    file.print %{
-        with "#{sobject}/Change" do |record|
+  file.print %{
+        with "#{sobject}/#{operative_phrase}" do |record|
           # Your code
         end
       end
