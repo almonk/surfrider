@@ -30,7 +30,7 @@ surfrider listens to Streaming Platform Events and allows developers to write cl
 First, tell surfrider which object and data you want to be able to subscribe to. Lets imagine we have a custom object called `Property__c` with fields `Name` and `Price`.
 
 ```
-./surf follow Property__c Name Price__c
+./surf follow Property__c All Name Price__c
 ```
 
 surfrider will automatically add the handler:

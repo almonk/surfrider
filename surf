@@ -49,6 +49,12 @@ def describe_all
 end
 
 def follow(sobject)
+  if ARGV[2] == nil
+    puts "Subscribe to events from an object in Salesforce e.g."
+    puts "surf follow [Object] [Event type: All/Create/Update/Delete] [Fields]"
+    return
+  end
+  
   notifyForOperationCreate = false
   notifyForOperationUpdate = false
   notifyForOperationDelete = false
