@@ -28,11 +28,19 @@ module Surfrider
         EM.stop
         exit
       end
-
-      @@client.subscription "/topic/#{event.sub!("/", "")}", replay: -1 do |message|
-        puts "⚡️ Message from Salesforce".blue
-        yield RecursiveOpenStruct.new(message["sobject"])
-        puts "\n"
+      
+      unless event.include? "event/" 
+        @@client.subscription "/topic/#{event.sub!("/", "")}", replay: -1 do |message|
+          puts "⚡️ Message from Salesforce".blue
+          yield RecursiveOpenStruct.new(message["sobject"])
+          puts "\n"
+        end
+      else
+        @@client.subscription "/#{event}", replay: -1 do |message|
+          puts "⚡️ Platform Event from Salesforce".blue
+          yield RecursiveOpenStruct.new(message["payload"])
+          puts "\n"
+        end
       end
     end
   end

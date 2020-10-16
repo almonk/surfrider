@@ -27,6 +27,10 @@ def parse_input
     serve
   end
 
+  if ARGV[0] == "subscribe"
+    subscribe(ARGV[1])
+  end
+
   if ARGV[0] == "replay"
     replay
   end
@@ -46,6 +50,23 @@ def describe_all
   Surfrider.client.describe.each do |sobject|
     puts "#{sobject.name}"
   end
+end
+
+def subscribe(event)
+  last_line = 0
+  file = File.open("app.rb", "r+")
+  file.each { last_line = file.pos unless file.eof? }
+
+  file.seek(last_line, IO::SEEK_SET)
+  file.print %{
+          with "event/#{event}" do |payload|
+            # Your code
+          end
+        end
+      }
+  file.close
+
+  system("rufo app.rb")
 end
 
 def follow(sobject)
