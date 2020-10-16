@@ -25,7 +25,7 @@ Connected to ☁️ Salesforce
 as: amonk@curious-wolf-58aoub.com
 ```
 
-## Write your first Event handler
+## Watch for Salesforce object changes
 
 surfrider listens to Streaming PushTopic Events and allows developers to write clojures to respond to them.
 
