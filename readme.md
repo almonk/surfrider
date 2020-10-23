@@ -1,4 +1,5 @@
-# 🌊 surfrider 
+<img src="https://user-images.githubusercontent.com/51724/96977958-b760c100-1515-11eb-9457-7b70a125f29b.png" height="80"/>
+
 
 surfrider is a *proof-of-concept* app framework to build event-based, Salesforce integrations using a simple and expressive DSL.
 
