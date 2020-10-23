@@ -3,6 +3,7 @@ require "restforce"
 require "recursive-open-struct"
 require "dotenv/load"
 require "colorize"
+require "pp"
 
 Surf = EM
 
@@ -32,12 +33,14 @@ module Surfrider
       unless event.include? "event/" 
         @@client.subscription "/topic/#{event.sub!("/", "")}", replay: -1 do |message|
           puts "⚡️ Message from Salesforce".blue
+          puts RecursiveOpenStruct.new(message["sobject"]).pretty_inspect
           yield RecursiveOpenStruct.new(message["sobject"])
           puts "\n"
         end
       else
         @@client.subscription "/#{event}", replay: -1 do |message|
           puts "⚡️ Platform Event from Salesforce".blue
+          puts RecursiveOpenStruct.new(message["payload"]).pretty_inspect
           yield RecursiveOpenStruct.new(message["payload"])
           puts "\n"
         end
@@ -46,7 +49,9 @@ module Surfrider
   end
 
   def dispatch(name, **args)
-    puts "⚡️ Sent Platform Event: #{@@client.create("#{name}__e", args)}".blue
+    puts "⚡️ Sent Platform Event: #{@@client.create("#{name}", args)}".blue
+    puts args.pretty_inspect
+    puts "\n"
   end
 
   def client
