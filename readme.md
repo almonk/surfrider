@@ -29,11 +29,23 @@ as: amonk@curious-wolf-58aoub.com
 
 surfrider listens to Streaming PushTopic Events and allows developers to write clojures to respond to them.
 
-First, tell surfrider which object and data you want to be able to subscribe to. Lets imagine we have a custom object called `Property__c` with fields `Name` and `Price`.
+First, tell surfrider which object and data you want to be able to subscribe to. Lets imagine we have a custom object called `Property__c`, we want to subscribe to `All` changes and we want the payload to contains fields `Name` and `Price`.
 
 ```
 ./surf follow Property__c All Name Price__c
 ```
+
+As well as `All` changes, we can also subscribe to;
+
+| Event type | Description                                                        |
+|------------|--------------------------------------------------------------------|
+| `All`        | All changes to object                                              |
+| `Create`     | When a new object of this type is created                          |
+| `Update`     | When an existing object is updated                                 |
+| `Delete`     | When an existing object is deleted                                 |
+| `Undelete`   | Only undelete events (when an object is undeleted from Salesforce) |
+
+
 
 surfrider will automatically add the handler:
 
