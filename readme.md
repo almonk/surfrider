@@ -65,7 +65,7 @@ To describe a specific object's fields:
 As well as receiving events from the Platform, Surfrider can trigger Platform Events using the dispatch method.
 
 ```ruby
-dispatch "EventName",
+dispatch "EventName__e",
        Foo: Bar # Add your custom fields here
 ```
 
