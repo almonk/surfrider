@@ -33,15 +33,15 @@ module Surfrider
       unless event.include? "event/" 
         @@client.subscription "/topic/#{event.sub!("/", "")}", replay: -1 do |message|
           puts "⚡️ Message from Salesforce".blue
-          puts RecursiveOpenStruct.new(message["sobject"]).pretty_inspect
-          yield RecursiveOpenStruct.new(message["sobject"])
+          puts RecursiveOpenStruct.new(message).pretty_inspect
+          yield RecursiveOpenStruct.new(message)
           puts "\n"
         end
       else
         @@client.subscription "/#{event}", replay: -1 do |message|
           puts "⚡️ Platform Event from Salesforce".blue
-          puts RecursiveOpenStruct.new(message["payload"]).pretty_inspect
-          yield RecursiveOpenStruct.new(message["payload"])
+          puts RecursiveOpenStruct.new(message).pretty_inspect
+          yield RecursiveOpenStruct.new(message)
           puts "\n"
         end
       end
