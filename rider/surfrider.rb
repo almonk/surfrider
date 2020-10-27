@@ -8,7 +8,7 @@ require "pp"
 Surf = EM
 
 module Surfrider
-  API_VERSION = 49.0
+  API_VERSION = 50.0
 
   @@client = Restforce.new(username: ENV["SF_USERNAME"],
                            password: ENV["SF_PASSWORD"],
